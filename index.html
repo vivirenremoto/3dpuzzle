@@ -100,7 +100,8 @@ h1,h2{font-weight:normal;}
 
     .only_desktop{display:none;}
 
-    H1, h2{font-size:40px;}
+    H1{font-size:40px;}
+    h2{font-size:30px;}
 
     
     #icon_music svg{width:60px;height:60px;}
@@ -138,16 +139,13 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
 <div id="result" style="display:none;color:white;text-align:center;font-size:30px;overflow-y:scroll;left:0;position:fixed;top:0;height:100%;width:100%;">
     
     <h1 style="color:yellow;">Game over</h1>
-    <h2 style="margin-bottom:0;">YOUR SCORE</h2>
+    <h2 style="margin-bottom:0;margin-top:5px;">SCORE: <span class="total_score2"></span></h2>
 
-    <span class="total_score2" style="
-    font-size: 60px;
-    margin: 0;
-"></span>
+    
 
 
 
-    <br><br>
+    <br>
 
     <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">TRY AGAIN<span class="only_desktop"> - ENTER</span></button>
     
@@ -198,7 +196,7 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     <div id="pos" style="display:none;z-index:999;position:fixed;left:0;top:0;background:red;color:white;padding:20px">0,0</div>
 
 
-    <div id="current" style="z-index:2;position:fixed;width:150px;height:150px;background-position:center center;background-repeat:no-repeat;">
+    <div id="current" style="display:none;z-index:2;position:fixed;width:150px;height:150px;background-position:center center;background-repeat:no-repeat;">
     </div>
 
     <table class="game" style="text-align:center;z-index:999;position:fixed;left:0;top:0;width:100%;height:100%;" border="1">
@@ -272,10 +270,11 @@ var screen_width_half = screen_width / 2;
 var screen_height_half = (screen_height / 2);
 var current_piece;
 var next_piece;
-
+var game_start = false;
 var music = 1;
 
 function moveLeft(){
+    if( !game_start ) return;
     speed_diff = speed_max;
     if( current_x == 0 ) return;
     if( total_moves >= max_moves ) return;
@@ -285,6 +284,7 @@ function moveLeft(){
 }
 
 function moveRight(){
+    if( !game_start ) return;
     speed_diff = speed_max;
     if( current_x == 1 ) return;
     if( total_moves >= max_moves ) return;
@@ -294,6 +294,7 @@ function moveRight(){
 }
 
 function moveUp(){
+    if( !game_start ) return;
     speed_diff = speed_max;
     if( current_y == 0 ) return;
     if( total_moves >= max_moves ) return;
@@ -303,6 +304,7 @@ function moveUp(){
 }
 
 function moveDown(){
+    if( !game_start ) return;
     speed_diff = speed_max;
     if( current_y == 1 ) return;
     if( total_moves >= max_moves ) return;
@@ -400,10 +402,14 @@ function randomPos(){
 
     total_moves = 0;
 
+    if( total_score == 20 ){
+        current_speed += 300;
+    }
+
     if( total_score == 30 ){
         max_moves = 3;
         $('#moves').html(max_moves);
-        current_speed += 400;
+        current_speed += 300;
     }
 
 
@@ -425,6 +431,9 @@ function randomPos(){
 
             failed_score = total_score;
             total_score = 0;
+
+
+
 
 
             //$('#sound_fail')[0].play();
@@ -449,7 +458,19 @@ function randomPos(){
         if( failed_score > min_score ){
             min_score = failed_score;
 
+
+
+
+
             setTimeout(function(){
+
+                if( music == 1 ){
+                    $('#music')[0].currentTime = 0;
+                    $('#music')[0].pause();
+                }
+
+
+
                 endGame();
             }, 300);
             return;
@@ -486,7 +507,7 @@ function randomPos(){
 
 
 
-    $('#current').css('background-image', "url('static/" + current_piece + "a.png')").css('width',cur_w).css('height',cur_h).css('left', cur_x).css('top', cur_y).css('opacity',0.3);
+    $('#current').css('background-image', "url('static/" + current_piece + "a.png')").css('width',cur_w).css('height',cur_h).css('left', cur_x).css('top', cur_y);
     
 
 
@@ -624,7 +645,9 @@ function updatePos(){
 
         var bg_aux = $('#next').attr('src');
             $('#next').attr('src', 'static/' + current_piece + '____b.png');
+
         
+
         setTimeout(function(){
 
 
@@ -639,7 +662,11 @@ function updatePos(){
 
                         $('#next').attr('src',bg_aux);
 
+                        game_start = true;
+
                         setTimeout(function(){
+
+                            $('#current').show();
 
 
                             $('#moves').html('').css('color','#00ff00');
@@ -702,7 +729,6 @@ function startPlaying(){
         height: screen_height_half,
         left: next_x,
         top: next_y,
-        opacity: 1
     }, speed_aux, function(){
 
         randomPos();
