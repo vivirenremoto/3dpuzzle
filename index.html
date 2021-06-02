@@ -73,7 +73,7 @@ body {
 .ui-page{border:0;width:100%;height:100%;min-height:100%;min-width:100%;max-width:100%;max-height:100%;}
 
 body{background:black;height:100%;width:100%;padding:0;margin:0;}
-#cover{opacity:0.5;}
+#cover{opacity:0.4;}
 .game td{opacity:0.3;background-size:130px auto;border:5px transparent solid;}
 
 #cover{background-size:100% auto;background-image:url("static/bg_screen.gif");}
@@ -132,7 +132,7 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
 
 <div id="result" style="display:none;color:white;text-align:center;font-size:30px;overflow-y:scroll;left:0;position:fixed;top:0;height:100%;width:100%;">
     
-    <h1 style="color:yellow;">3D Space Puzzle</h1>
+    <h1 style="color:yellow;">Game over</h1>
     <h2 style="margin-bottom:0;">YOUR SCORE</h2>
 
     <span class="total_score2" style="
@@ -186,7 +186,7 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
           </svg>
     </div>
 
-    <div id="moves" style="display:none;left:50%;top:50%;font-size:200px;text-align:center;width:100px;margin-left:-50px;margin-top:-100px;position:fixed;color:#00ff00;opacity:0.7;">2</div>
+    <div id="moves" style="display:none;left:50%;top:50%;font-size:200px;text-align:center;width:100px;margin-left:-50px;margin-top:-100px;position:fixed;color:#00ff00;opacity:0.7;">3</div>
 
     <div id="cover" style="background-position:center center;z-index:1;image-rendering: pixelated;position:fixed;left:0;top:0;width:100%;height:100%;"></div>
 
@@ -236,6 +236,7 @@ integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="ano
 
 
 <script>
+var first_try = false; 
 var current_x = 0;
 var current_y = 0;
 var next_x = 0;
@@ -271,7 +272,7 @@ var music = 1;
 function moveLeft(){
     speed_diff = speed_max;
     if( current_x == 0 ) return;
-    if( total_moves == max_moves ) return;
+    if( total_moves >= max_moves ) return;
     total_moves++;
     if( current_x == 1 ) current_x--;
     updatePos();
@@ -280,7 +281,7 @@ function moveLeft(){
 function moveRight(){
     speed_diff = speed_max;
     if( current_x == 1 ) return;
-    if( total_moves == max_moves ) return;
+    if( total_moves >= max_moves ) return;
     total_moves++;
     if( current_x == 0 ) current_x++;
     updatePos();
@@ -289,7 +290,7 @@ function moveRight(){
 function moveUp(){
     speed_diff = speed_max;
     if( current_y == 0 ) return;
-    if( total_moves == max_moves ) return;
+    if( total_moves >= max_moves ) return;
     total_moves++;
     if( current_y == 1 ) current_y--;
     updatePos();
@@ -298,7 +299,7 @@ function moveUp(){
 function moveDown(){
     speed_diff = speed_max;
     if( current_y == 1 ) return;
-    if( total_moves == max_moves ) return;
+    if( total_moves >= max_moves ) return;
     total_moves++;
     if( current_y == 0 ) current_y++;
     updatePos();
@@ -393,11 +394,7 @@ function randomPos(){
 
     total_moves = 0;
 
-
-    $('#moves').hide();
-    setTimeout(function(){
-        $('#moves').html(max_moves).css('color','#00ff00').fadeIn();
-    }, 200)
+ 
 
 
 
@@ -435,7 +432,7 @@ function randomPos(){
 
         setTimeout(function(){
             $('.game td').css('background-color','transparent');
-        }, 200);
+        }, 150);
 
 
 
@@ -511,10 +508,11 @@ function randomPos(){
 
 
     shuffle(pieces_aux);
+    shuffle(pieces_aux);
 
 
     var diff_piece = 'b';
-    if( total_score > 4 ){
+    if( total_score > 5 ){
         diff_piece = '';
     }
 
@@ -550,20 +548,17 @@ function startGame(){
     $('#intro').hide();
     $('#result').hide();
     $('#game').show();
+
+
     randomPos();
+    
 }
 
 
 function updatePos(){
     $('#pos').html(current_x +', ' + current_y);
     
-    var diff_moves = max_moves - total_moves;
 
-    $('#moves').html(diff_moves);
-
-    if( diff_moves == 0 ){
-        $('#moves').css('color','red');
-    }
 
     if( current_x == 0 ){
         next_x = 0;
@@ -586,43 +581,6 @@ function updatePos(){
 
 
     
-    /*
-    timer = setInterval(function(){
- 
-
-        
-        if( current_x == 0 ){
-            cur_x-=0.5;
-        }else{
-            cur_x=0.5;
-        }
-
-        if( current_y == 0 ){
-            cur_y-=0.5;
-        }else{
-            cur_y+=0.5;
-        }
-
-        cur_w++;
-        cur_h++;
-
-
-
-
-
-        $('#current').css('left', cur_x).css('top', cur_y).css('width', cur_w).css('height', cur_h);
-
-        
-        //&& cur_w == screen_width_half && cur_h == screen_height_half
-        //cur_x <= next_x && cur_y <= next_y
-
-        if( (cur_w-110) >= screen_width_half && (cur_h-110) >= screen_height_half ){
-            clearInterval(timer);
-            randomPos();
-        }
-
-    })
-    */
 
 
     
@@ -633,6 +591,81 @@ function updatePos(){
     }
 
     
+    if( !first_try ){
+        first_try = true;
+
+
+        var bg_aux = $('#next').attr('src');
+            $('#next').attr('src', 'static/' + current_piece + '____b.png');
+        
+        setTimeout(function(){
+
+
+            $('#moves').show().html('3').css('color','white');
+            setTimeout(function(){
+                $('#moves').html('2');
+                setTimeout(function(){
+                    $('#moves').html('1');
+
+                    setTimeout(function(){
+                        $('#moves').html('<span style="position:relative;margin-left:-30px">GO</span>');
+
+                        $('#next').attr('src',bg_aux);
+
+                        setTimeout(function(){
+
+
+                            $('#moves').html('').css('color','#00ff00');
+                            
+                            startPlaying();
+
+                        }, 1000);
+
+
+
+                    }, 1000);
+                }, 1000);
+            }, 1000);
+        }, 1000);
+
+
+
+    }else{
+
+
+
+
+
+        
+        startPlaying();
+
+    }
+
+
+
+
+
+}
+
+
+function startPlaying(){
+    
+
+
+    
+    var diff_moves = max_moves - total_moves;
+
+    $('#moves').html(diff_moves);
+
+    if( diff_moves == 0 ){
+        $('#moves').css('color','red');
+    }else{
+        $('#moves').css('color','#00ff00');
+
+    }
+
+    
+
 
     $('#current').stop().animate({
         width: screen_width_half,
@@ -644,11 +677,7 @@ function updatePos(){
 
         randomPos();
     });
-
-
-
 }
-
 
 function changeMusic(){
     var song = 'Tetris';
