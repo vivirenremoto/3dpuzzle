@@ -101,13 +101,13 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     In each round you have only 2 moves, <br class="only_desktop">score is reset if you make a mistake
     <br><br>
 
-    controls:<br>
+    controls ←→↑↓<br>
     PC - keyboard<br>
-    Mobile - swipe screen
+    Mobile - swipe
 
     <br><br><br>
 
-    <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">START<span class="only_desktop"> - INTRO</span></button>
+    <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">START<span class="only_desktop"> - ENTER</span></button>
 
 </div>
 
@@ -126,7 +126,7 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
 
     <br><br>
 
-    <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">TRY AGAIN<span class="only_desktop"> - INTRO</span></button>
+    <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">TRY AGAIN<span class="only_desktop"> - ENTER</span></button>
 
     <br><br>
     <button onclick="share()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">SHARE</button>
@@ -202,7 +202,7 @@ var current_y = 0;
 var next_x = 0;
 var next_y = 0;
 var current_time = 50;
-var speed = 20;
+var speed = 30;
 var speed_max = 900;
 var default_speed = 2000 + speed;
 var current_speed = default_speed;
@@ -469,7 +469,7 @@ function randomPos(){
     shuffle(pieces_aux);
 
     for(var i=0; i<4; i++){
-        $('.game td:eq(' + i + ')').css('background-image', "url('static/" + pieces_aux[i] + "__.png')").data('value', pieces_aux[i]);
+        $('.game td:eq(' + i + ')').css('background-image', "url('static/" + pieces_aux[i] + "____.png')").data('value', pieces_aux[i]);
     }
 
 
