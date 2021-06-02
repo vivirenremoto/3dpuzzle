@@ -98,7 +98,7 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
 <div id="intro" style="left:0;position:fixed;top:0;height:100%;width:100%;color:white;text-align:center;font-size:30px;overflow-y:scroll;">
     <h1 style="color:yellow;">3D Space Puzzle</h1>
 
-    In each round you have only 2 moves <br class="only_desktop">score is reset if you make a mistake
+    In each round you have only 2 moves, <br class="only_desktop">score is reset if you make a mistake
     <br><br>
 
     controls:<br>
@@ -561,13 +561,17 @@ function updatePos(){
     */
 
 
-    var speed_aux;
+    var speed_aux = current_speed /2;
+
+    /*
 
     if( speed_diff < current_speed ){
         speed_aux = current_speed-speed_diff;
     }else{
         speed_aux = current_speed;
     }
+
+    */
 
     $('#current').stop().animate({
         width: screen_width_half,
