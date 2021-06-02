@@ -413,19 +413,26 @@ function randomPos(){
 
     total_moves = 0;
 
-    if( total_score == 20 ){
-        current_speed += 300;
+
+    // normal, hard
+    if( difficult > 0 ){
+        if( total_score == 20 ){
+            current_speed += 300;
+        }
+
+        if( total_score == 30 ){
+            
+            // normal
+            if( difficult == 1 ) max_moves = 3;
+
+            $('#moves').html(max_moves);
+            current_speed += 300;
+        }
     }
 
-    if( total_score == 30 ){
-        max_moves = 3;
-        $('#moves').html(max_moves);
-        current_speed += 300;
-    }
 
 
-
-    if( current_speed < default_speed ){
+    if( game_start ){
         failed_score = 0;
 
 
