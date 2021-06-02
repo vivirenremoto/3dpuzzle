@@ -11,6 +11,7 @@
 
     
     <link rel="prefetch" href="static/music2.mp3" />
+    <link rel="prefetch" href="static/music3.mp3" />
     <link rel="prefetch" href="static/fail.mp3" />
     <link rel="prefetch" href="static/1.png" />
     <link rel="prefetch" href="static/2.png" />
@@ -109,6 +110,11 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
 
     <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">START<span class="only_desktop"> - ENTER</span></button>
 
+    <br><br>
+
+    <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC - TETRIS</button>
+
+    
 </div>
 
 
@@ -127,6 +133,11 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     <br><br>
 
     <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">TRY AGAIN<span class="only_desktop"> - ENTER</span></button>
+
+    <br><br>
+
+    <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC - TETRIS</button>
+
 
     <br><br>
     <button onclick="share()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">SHARE</button>
@@ -180,6 +191,10 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     <source src="static/music2.mp3" type="audio/mp3">
 </audio>
 
+<audio id="music2" loop>
+    <source src="static/music3.mp3" type="audio/mp3">
+</audio>
+
 <audio id="sound_fail">
     <source src="static/fail.mp3" type="audio/mp3">
 </audio>
@@ -226,6 +241,8 @@ var screen_width_half = screen_width / 2;
 var screen_height_half = (screen_height / 2);
 var current_piece;
 var next_piece;
+
+var music = 1;
 
 function moveLeft(){
     speed_diff = speed_max;
@@ -482,7 +499,15 @@ function randomPos(){
 
 
 function startGame(){
-    $('#music')[0].play();
+
+    if( music == 1 ){
+        $('#music')[0].play();
+    }else{
+        $('#music2')[0].play();
+    }
+
+
+    
     $('#intro').hide();
     $('#result').hide();
     $('#game').show();
@@ -585,6 +610,23 @@ function updatePos(){
 }
 
 
+function changeMusic(){
+    var song = 'Tetris';
+    if( music == 1 ){
+        song = 'Future';
+        music = 2;
+        $('#music')[0].pause();
+        $('#music2')[0].currentTime = 0;
+        $('#music2')[0].play();
+    }else{
+        music = 1;
+        $('#music')[0].currentTime = 0;
+        $('#music')[0].play();
+        $('#music2')[0].pause();
+    }
+    $('.btn_music').html('Music - ' + song);
+}
+
 function share() {
 
 
@@ -611,7 +653,7 @@ function share() {
 
 
 $('#music')[0].volume = 0.5;
-
+$('#music2')[0].volume = 0.5;
 
 </script>
     
