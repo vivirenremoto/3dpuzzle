@@ -203,7 +203,7 @@ var next_x = 0;
 var next_y = 0;
 var current_time = 50;
 var speed = 20;
-var speed_max = 600;
+var speed_max = 900;
 var default_speed = 2000 + speed;
 var current_speed = default_speed;
 var timer;
@@ -561,17 +561,14 @@ function updatePos(){
     */
 
 
-    var speed_aux = current_speed /2;
-
-    /*
-
+    
     if( speed_diff < current_speed ){
         speed_aux = current_speed-speed_diff;
     }else{
         speed_aux = current_speed;
     }
 
-    */
+    
 
     $('#current').stop().animate({
         width: screen_width_half,
