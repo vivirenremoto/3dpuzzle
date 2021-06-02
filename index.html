@@ -454,7 +454,10 @@ function randomPos(){
 
 
 
-
+            if( music == 1 ){
+                $('#music')[0].currentTime = 0;
+                //$('#music')[0].pause();
+            }
 
             //$('#sound_fail')[0].play();
 
@@ -485,7 +488,7 @@ function randomPos(){
             setTimeout(function(){
 
                 if( music == 1 ){
-                    $('#music')[0].currentTime = 0;
+                    //$('#music')[0].currentTime = 0;
                     $('#music')[0].pause();
                 }
 
@@ -494,8 +497,7 @@ function randomPos(){
                 endGame();
             }, 300);
             return;
-        }
-                
+        }   
 
 
 
