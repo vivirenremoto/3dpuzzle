@@ -326,24 +326,24 @@ function randomPos(){
     var pieces = [1,2,3,4,5];
 
 
-    pieces = arrayRemove(pieces, next_piece);
+    //pieces = arrayRemove(pieces, next_piece);
 
-
-    shuffle(pieces);
 
 
 
     var pieces_aux = [];
     
 
-    for(var i=0; i<4; i++){
-        //if( pieces[i] != next_piece ){
+    for(var i=0; i<pieces.length; i++){
+        if( pieces[i] != next_piece ){
             pieces_aux.push(pieces[i]);
-        //}
+        }
     }
 
+    shuffle(pieces_aux);
 
-    pieces_aux.push(next_piece);
+
+    pieces_aux[0] = next_piece;
 
 
     shuffle(pieces_aux);
@@ -448,6 +448,8 @@ $('body').click(function (e) {
         $('#music')[0].play();
     }
 });
+
+$('#music')[0].volume = 0.5;
 
 
 </script>
