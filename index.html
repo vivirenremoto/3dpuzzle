@@ -349,7 +349,7 @@ function randomPos(){
 
     $('#moves').hide();
     setTimeout(function(){
-        $('#moves').html(max_moves).fadeIn();
+        $('#moves').html(max_moves).css('color','#00ff00').fadeIn();
     }, 200)
 
 
@@ -489,10 +489,10 @@ function updatePos(){
     
     var diff_moves = max_moves - total_moves;
 
-    if( diff_moves ){
-        $('#moves').html(diff_moves);
-    }else{
-        $('#moves').hide();
+    $('#moves').html(diff_moves);
+
+    if( diff_moves == 0 ){
+        $('#moves').css('color','red');
     }
 
     if( current_x == 0 ){
