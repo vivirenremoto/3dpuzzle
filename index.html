@@ -400,11 +400,9 @@ function randomPos(){
 
     total_moves = 0;
 
-    if( total_score == 10 ){
-        $('#moves').html(max_moves);
-
-    }else if( total_score == 20 ){
+    if( total_score == 30 ){
         max_moves = 3;
+        $('#moves').html(max_moves);
         current_speed += 400;
     }
 
@@ -513,17 +511,17 @@ function randomPos(){
     }
 
     var diff_piece = 'b';
-    if( total_score > 5 ){
+    if( total_score > 10 ){
         diff_piece = '';
     
     }
     
-    if( total_score > 10 ){
+    if( total_score > 20 ){
 
 
 
 
-        if( total_score > 20 ){
+        if( total_score > 30 ){
             var rand_deg = randomNumber(0, 360);
 
             $('.game td img').css('transform', 'rotate(' + rand_deg + 'deg)');
