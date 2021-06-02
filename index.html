@@ -89,7 +89,7 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
 
 
 <div id="intro" style="color:white;text-align:center;font-size:30px;">
-    <h1>Tetris 3D</h1>
+    <h1 style="color:yellow;">Tetris 3D</h1>
 
     In each round you have<br>a maximum of 3 moves<br>to put the piece in place,<br>if you fail your score restarts.
     <br><br>
@@ -100,7 +100,32 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
 
     <br><br><br>
 
-    <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:200px;padding:10px 0;">START</button>
+    <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">START</button>
+
+</div>
+
+
+<div id="result" style="display:none;color:white;text-align:center;font-size:30px;">
+    <h1 style="color:yellow;margin-bottom:0;">YOUR SCORE</h1>
+
+    <span class="total_score" style="color:yellow;
+    font-size: 80px;
+    margin: 0;
+"></span>
+
+    <h2 style="margin-bottom:0;">BEST SCORE</h2>
+    
+    <span class="best_score" style="
+    font-size: 60px;
+    margin: 0;
+"></span>
+
+    <br><br>
+
+    <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">TRY AGAIN?</button>
+
+    <br><br>
+    <button onclick="share()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">SHARE</button>
 
 </div>
 
@@ -110,11 +135,11 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
         <tr>
         <td width="33%">
             SCORE<br>
-            <span id="total_score">0</span>
+            <span class="total_score">0</span>
         </td>
         <td width="33%">
             BEST<br>
-            <span id="best_score">0</span>
+            <span class="best_score">0</span>
         </td>
         <td width="33%">
             NEXT<br>
@@ -180,6 +205,8 @@ var total_moves = 0;
 var piece_width = 80;
 var best_score = 0;
 var total_score = 0;
+var min_score = 10;
+var failed_score = 0;
 
 var cur_x = 0;
 var cur_y = 0;
@@ -299,12 +326,22 @@ function shuffle(array) {
 
 
 
+function endGame(){
+    $('#result .total_score').html(failed_score);
+    $('#game').hide();
+    $('#result').show();
+    clearInterval(timer);
+}
+
 function randomPos(){
 
     total_moves = 0;
 
 
     if( current_speed < default_speed ){
+        failed_score = 0;
+
+
         if( $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ')').data('value') == current_piece ){
             //$('table').css('border','5px #00ff00 solid');
             $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ')').css('background-color','#00ff00');
@@ -315,25 +352,38 @@ function randomPos(){
             $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ')').css('background-color','red');
             current_speed = default_speed;
 
+
+            failed_score = total_score;
             total_score = 0;
 
-            $('#best_score').html(best_score);
 
             $('#sound_fail')[0].play();
+
         }
 
 
         if( total_score > best_score ){
             best_score = total_score;
         }
-        $('#best_score').html(best_score);
+        $('.best_score').html(best_score);
 
         
-        $('#total_score').html(total_score);
+        $('.total_score').html(total_score);
 
         setTimeout(function(){
             $('.game td').css('background-color','transparent');
         }, 200);
+
+
+
+        if( failed_score >= min_score ){
+            endGame();
+            return;
+        }
+                
+
+
+
     }
 
 
@@ -409,6 +459,7 @@ function randomPos(){
 function startGame(){
     $('#music')[0].play();
     $('#intro').hide();
+    $('#result').hide();
     $('#game').show();
     randomPos();
 }
@@ -486,6 +537,29 @@ function updatePos(){
     });
 
 
+
+}
+
+
+function share() {
+
+
+    var share_title = document.title;
+    var share_url = document.location.href;
+
+    if (total_score) {
+        share_title += ' 👊 Beat my score! 🔥' + total_score;
+    }
+
+    if (navigator.share) {
+        navigator.share({
+            title: share_title,
+            url: share_url
+        });
+
+    } else {
+        window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(share_title) + '&tw_p=tweetbutton&url=' + encodeURIComponent(share_url));
+    }
 
 }
 
