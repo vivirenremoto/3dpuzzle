@@ -22,7 +22,7 @@
     <link rel="prefetch" href="static/3__.png" />
     <link rel="prefetch" href="static/4__.png" />
     <link rel="prefetch" href="static/5__.png" />
-    <link rel="prefetch" href="static/bg.gif" />
+    <link rel="prefetch" href="static/bg_screen.gif" />
 
     
     <meta property="og:image" content="https://vivirenremoto.github.io/tetris3d/static/social.jpg">
@@ -72,13 +72,16 @@ body{background:black;height:100%;width:100%;padding:0;margin:0;}
 
 #cover{background-size:100% auto;background-image:url("static/bg_screen.gif");}
 
+#current{background-size:20% auto;}
+
 @media screen and (max-width: 480px) {
-    #cover{background-size:auto 100%;background-image:url("static/bg.gif");}
+    #cover{background-size:auto 100%;background-image:url("static/bg_screen.gif");}
     #author{display:none;}
 
     
     .game td{background-size:80px auto;}
 
+    #current{background-size:30% auto;}
 }
 </style>
 
@@ -88,10 +91,10 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
 @vivirenremoto</a>
 
 
-<div id="intro" style="color:white;text-align:center;font-size:30px;overflow-y:scroll;">
+<div id="intro" style="left:0;position:fixed;top:0;height:100%;width:100%;color:white;text-align:center;font-size:30px;overflow-y:scroll;">
     <h1 style="color:yellow;">Tetris 3D</h1>
 
-    In each round you have<br>a maximum of 3 moves<br>to put the piece in place,<br>if you fail your score restarts.
+    In each round you have<br>a maximum of 2 moves<br>to put the piece in place,<br>if you fail your score restarts.
     <br><br>
 
     controls:<br>
@@ -105,7 +108,7 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
 </div>
 
 
-<div id="result" style="display:none;color:white;text-align:center;font-size:30px;overflow-y:scroll;">
+<div id="result" style="display:none;color:white;text-align:center;font-size:30px;overflow-y:scroll;left:0;position:fixed;top:0;height:100%;width:100%;">
     <h1 style="color:yellow;margin-bottom:0;">YOUR SCORE</h1>
 
     <span class="total_score" style="color:yellow;
@@ -148,12 +151,14 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
         </tr>
     </table>
 
+    <div id="moves" style="display:none;left:50%;top:50%;font-size:200px;text-align:center;width:100px;margin-left:-50px;margin-top:-100px;position:fixed;color:#00ff00;opacity:0.7;">2</div>
+
     <div id="cover" style="background-position:center center;z-index:1;image-rendering: pixelated;position:fixed;left:0;top:0;width:100%;height:100%;"></div>
 
     <div id="pos" style="display:none;z-index:999;position:fixed;left:0;top:0;background:red;color:white;padding:20px">0,0</div>
 
 
-    <div id="current" style="z-index:2;position:fixed;width:150px;height:150px;background:url('static/3.png');background-position:center center;background-size:30% auto;background-repeat:no-repeat;">
+    <div id="current" style="z-index:2;position:fixed;width:150px;height:150px;background-image:url('static/3.png');background-position:center center;background-repeat:no-repeat;">
     </div>
 
     <table class="game" style="z-index:999;position:fixed;left:0;top:0;width:100%;height:100%;" border="1">
@@ -196,12 +201,12 @@ var current_y = 0;
 var next_x = 0;
 var next_y = 0;
 var current_time = 50;
-var speed = 10;
+var speed = 20;
 var speed_max = 500;
 var default_speed = 2000 + speed;
 var current_speed = default_speed;
 var timer;
-var max_moves = 3;
+var max_moves = 2;
 var total_moves = 0;
 var piece_width = 80;
 var best_score = 0;
@@ -347,6 +352,13 @@ function randomPos(){
     total_moves = 0;
 
 
+    $('#moves').hide();
+    setTimeout(function(){
+        $('#moves').html(max_moves).fadeIn();
+    }, 200)
+
+
+
     if( current_speed < default_speed ){
         failed_score = 0;
 
@@ -397,6 +409,8 @@ function randomPos(){
 
 
     current_speed -= speed;
+
+    console.log(current_speed);
 
     if( !current_piece ){
         current_piece = randomNumber(1, 5);
@@ -476,7 +490,14 @@ function startGame(){
 
 function updatePos(){
     $('#pos').html(current_x +', ' + current_y);
+    
+    var diff_moves = max_moves - total_moves;
 
+    if( diff_moves ){
+        $('#moves').html(diff_moves);
+    }else{
+        $('#moves').hide();
+    }
 
     if( current_x == 0 ){
         next_x = 0;
