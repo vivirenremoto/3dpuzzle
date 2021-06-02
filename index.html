@@ -92,7 +92,7 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
 
 
 <div id="intro" style="left:0;position:fixed;top:0;height:100%;width:100%;color:white;text-align:center;font-size:30px;overflow-y:scroll;">
-    <h1 style="color:yellow;">Tetris 3D</h1>
+    <h1 style="color:yellow;">3D Space Puzzle</h1>
 
     In each round you have<br>a maximum of 2 moves<br>to put the piece in place,<br>if you fail your score restarts.
     <br><br>
@@ -109,19 +109,14 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
 
 
 <div id="result" style="display:none;color:white;text-align:center;font-size:30px;overflow-y:scroll;left:0;position:fixed;top:0;height:100%;width:100%;">
-    <h1 style="color:yellow;margin-bottom:0;">YOUR SCORE</h1>
+    <h1 style="margin-bottom:0;">YOUR SCORE</h1>
 
-    <span class="total_score" style="color:yellow;
+    <span class="total_score" style="
     font-size: 80px;
     margin: 0;
 "></span>
 
-    <h2 style="margin-bottom:0;">BEST SCORE</h2>
-    
-    <span class="best_score" style="
-    font-size: 60px;
-    margin: 0;
-"></span>
+
 
     <br><br>
 
@@ -211,7 +206,7 @@ var total_moves = 0;
 var piece_width = 80;
 var best_score = 0;
 var total_score = 0;
-var min_score = 10;
+var min_score = 0;
 var failed_score = 0;
 
 var cur_x = 0;
@@ -397,7 +392,8 @@ function randomPos(){
 
 
 
-        if( failed_score >= min_score ){
+        if( failed_score > min_score ){
+            min_score = failed_score;
             endGame();
             return;
         }
