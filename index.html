@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tetris 3D</title>
+    <title>3D Space Puzzle</title>
 
     
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -27,10 +27,10 @@
     
     <meta property="og:image" content="https://vivirenremoto.github.io/tetris3d/static/social.jpg">
     <meta property="og:image:secure_url" content="https://vivirenremoto.github.io/tetris3d/static/social.jpg">
-    <meta property="og:image:alt" content="Tetris 3D">
+    <meta property="og:image:alt" content="3D Space Puzzle">
     <meta property="og:image:type" content="image/png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tetris 3D">
+    <meta name="twitter:title" content="3D Space Puzzle">
     <meta name="twitter:image" content="https://vivirenremoto.github.io/tetris3d/static/social.jpg">
 
 </head>
@@ -68,7 +68,7 @@ body {
 
 body{background:black;height:100%;width:100%;padding:0;margin:0;}
 #cover{opacity:0.5;}
-.game td{opacity:0.3;background-size:130px auto;}
+.game td{opacity:0.3;background-size:130px auto;border:5px transparent solid;}
 
 #cover{background-size:100% auto;background-image:url("static/bg_screen.gif");}
 
@@ -163,7 +163,7 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
 
     <table class="game" style="z-index:999;position:fixed;left:0;top:0;width:100%;height:100%;" border="1">
         <tr>
-            <td style="background-repeat:no-repeat;background-position:center center;"></td>
+            <td style="background-repeat:no-repeat;background-position:center center;border:5px yellow solid;"></td>
             <td style="background-repeat:no-repeat;background-position:center center;"></td>
         </tr>
         <tr>
@@ -510,7 +510,11 @@ function updatePos(){
     }else{
         next_y = screen_height_half;
     }
-     
+
+
+    $('.game td').css('border','5px transparent solid');
+    $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ')').css('border','5px yellow solid');
+
 
     clearInterval(timer);
 
