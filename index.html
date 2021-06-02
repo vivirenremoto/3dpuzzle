@@ -75,6 +75,9 @@ body{background:black;height:100%;width:100%;padding:0;margin:0;}
 
 #current{background-size:20% auto;}
 
+
+#icon_music svg{width:90px;height:90px;opacity:0.8;}
+
 @media screen and (max-width: 480px) {
     #cover{background-size:auto 100%;background-image:url("static/bg_screen.gif");}
     #author{display:none;}
@@ -87,6 +90,9 @@ body{background:black;height:100%;width:100%;padding:0;margin:0;}
     .only_desktop{display:none;}
 
     H1, h2{font-size:40px;}
+
+    
+    #icon_music svg{width:60px;height:60px;}
 }
 </style>
 
@@ -112,7 +118,7 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
 
     <br><br>
 
-    <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC - TETRIS</button>
+    <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC: TETRIS</button>
 
     
 </div>
@@ -133,10 +139,14 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     <br><br>
 
     <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">TRY AGAIN<span class="only_desktop"> - ENTER</span></button>
+    
+    <br><br>
+
+    <button onclick="showIntro()()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">HOW TO PLAY</button>
 
     <br><br>
 
-    <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC - TETRIS</button>
+    <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC: TETRIS</button>
 
 
     <br><br>
@@ -162,6 +172,13 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
         </td>
         </tr>
     </table>
+    <div id="icon_music" style="z-index:99999;position:fixed;right:5px;bottom:5px;cursor:pointer;" onclick="changeMusic()">
+        <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+            <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/>
+            <path fill-rule="evenodd" d="M14 11V2h1v9h-1zM6 3v10H5V3h1z"/>
+            <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4V2.905z"/>
+          </svg>
+    </div>
 
     <div id="moves" style="display:none;left:50%;top:50%;font-size:200px;text-align:center;width:100px;margin-left:-50px;margin-top:-100px;position:fixed;color:#00ff00;opacity:0.7;">2</div>
 
@@ -321,7 +338,7 @@ $("body").keydown(function (e) {
         moveLeft();
     } else if (e.keyCode == 39) {
         moveRight();
-    } else if (e.keyCode == 13) {
+    } else if (e.keyCode == 13 &&  $('#game:visible').length == 0 ) {
         startGame();
     }
 
@@ -396,7 +413,7 @@ function randomPos(){
             total_score = 0;
 
 
-            $('#sound_fail')[0].play();
+            //$('#sound_fail')[0].play();
 
         }
 
@@ -417,7 +434,10 @@ function randomPos(){
 
         if( failed_score > min_score ){
             min_score = failed_score;
-            endGame();
+
+            setTimeout(function(){
+                endGame();
+            }, 300);
             return;
         }
                 
@@ -452,7 +472,7 @@ function randomPos(){
 
 
 
-    $('#current').css('background-image', "url('static/" + current_piece + ".png')").css('width',cur_w).css('height',cur_h).css('left', cur_x).css('top', cur_y);
+    $('#current').css('background-image', "url('static/" + current_piece + ".png')").css('width',cur_w).css('height',cur_h).css('left', cur_x).css('top', cur_y).css('opacity',0.3);
     
 
 
@@ -495,6 +515,12 @@ function randomPos(){
 
     updatePos();
 
+}
+
+
+function showIntro(){
+    $('#result').hide();
+    $('#intro').show();
 }
 
 
@@ -599,7 +625,8 @@ function updatePos(){
         width: screen_width_half,
         height: screen_height_half,
         left: next_x,
-        top: next_y
+        top: next_y,
+        opacity: 1
     }, speed_aux, function(){
 
         randomPos();
@@ -624,7 +651,7 @@ function changeMusic(){
         $('#music')[0].play();
         $('#music2')[0].pause();
     }
-    $('.btn_music').html('Music - ' + song);
+    $('.btn_music').html('Music: ' + song);
 }
 
 function share() {
