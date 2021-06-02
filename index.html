@@ -127,7 +127,11 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     <br><br><br>
 
     <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">START<span class="only_desktop"> - ENTER</span></button>
+    <br><br>
 
+    <button onclick="changeDifficult()" class="btn_difficult" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MODE: NORMAL</button>
+
+    
     <br><br>
 
     <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC: TETRIS</button>
@@ -148,15 +152,19 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     <br>
 
     <button onclick="startGame()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">TRY AGAIN<span class="only_desktop"> - ENTER</span></button>
-    
+
     <br><br>
 
-    <button onclick="showIntro()()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">HOW TO PLAY</button>
+    <button onclick="changeDifficult()" class="btn_difficult" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MODE: NORMAL</button>
+
 
     <br><br>
 
     <button onclick="changeMusic()" class="btn_music" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">MUSIC: TETRIS</button>
 
+    <br><br>
+
+    <button onclick="showIntro()()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">HOW TO PLAY</button>
 
     <br><br>
     <button onclick="share()" style="cursor:pointer;border:5px white solid;background:black;color:white;font-size:30px;width:250px;padding:10px 0;">SHARE</button>
@@ -239,13 +247,16 @@ integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="ano
 
 
 <script>
+var difficult = 1;
 var first_try = false; 
 var current_x = 0;
 var current_y = 0;
 var next_x = 0;
 var next_y = 0;
 var current_time = 50;
-var speed = 30;
+var speed_normal = 30;
+var speed_easy = 15;
+var speed = speed_normal;
 var speed_max = 900;
 var default_speed = 2000 + speed;
 var current_speed = default_speed;
@@ -426,7 +437,16 @@ function randomPos(){
 
         }else{
             $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ')').css('background-color','red');
+
             current_speed = default_speed;
+
+
+
+            if( difficult == 0 ){
+                speed = speed_easy;
+            }else{
+                speed = speed_normal;
+            }
 
 
             failed_score = total_score;
@@ -532,31 +552,47 @@ function randomPos(){
     }
 
     var diff_piece = 'b';
-    if( total_score > 10 ){
-        diff_piece = '';
-    
-    }
-    
-    if( total_score > 20 ){
 
 
 
+    if( difficult > 0 ){ // at least easy
 
-        if( total_score > 30 ){
-            var rand_deg = randomNumber(0, 360);
-
-            $('.game td img').css('transform', 'rotate(' + rand_deg + 'deg)');
         
-        }else{
 
-            var rand_deg = randomNumber(0, 360) * 90;
+        if( total_score > 10 ){
+            diff_piece = '';
+        
+        }
+        
+
+        if( difficult == 1 ){ // normal
+
+            if( total_score > 20 ){
+
+
+
+
+                if( total_score > 30 ){
+                    var rand_deg = randomNumber(0, 360);
+
+                    $('.game td img').css('transform', 'rotate(' + rand_deg + 'deg)');
+                
+                }else{
+
+                    var rand_deg = randomNumber(0, 360) * 90;
+
+                    $('.game td img').css('transform', 'rotate(' + rand_deg + 'deg)');
+                }
+
+            }
+
+        }else{ // hard
+            var rand_deg = randomNumber(0, 360);
 
             $('.game td img').css('transform', 'rotate(' + rand_deg + 'deg)');
         }
 
     }
-
-
 
     
 
@@ -583,6 +619,12 @@ function startGame(){
 
     max_moves = default_moves;
 
+    if( difficult == 0 ){
+        speed = speed_easy;
+    }else{
+        speed = speed_normal;
+    }
+
     
 
     if( music == 1 ){
@@ -604,7 +646,7 @@ function startGame(){
 
 
 function updatePos(){
-    $('#pos').html(current_x +', ' + current_y);
+    $('#pos').html(current_x +', ' + current_y+'---'+speed);
     
 
 
@@ -750,6 +792,22 @@ function changeMusic(){
         $('#music2')[0].pause();
     }
     $('.btn_music').html('Music: ' + song);
+}
+
+function changeDifficult(){
+    var mode = 'Normal';
+    if( difficult == 1 ){
+        mode = 'easy';
+        difficult = 0;
+    }else if( difficult == 0 ){
+        mode = 'hard';
+        difficult = 2;
+    }else{
+        mode = 'normal';
+        difficult = 1;
+    }
+
+    $('.btn_difficult').html('Mode: ' + mode);
 }
 
 function share() {
