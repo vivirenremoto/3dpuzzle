@@ -489,18 +489,13 @@ function randomPos(){
             min_score = failed_score;
 
 
+            if( music == 1 ){
+                $('#music')[0].pause();
+            }
 
 
 
             setTimeout(function(){
-
-                if( music == 1 ){
-                    //$('#music')[0].currentTime = 0;
-                    $('#music')[0].pause();
-                }
-
-
-
                 endGame();
             }, 300);
             return;
