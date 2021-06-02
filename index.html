@@ -196,14 +196,14 @@ style="font-size:30px;position:fixed;right:30px;top:10px;z-index:2;color:white;t
     <div id="current" style="z-index:2;position:fixed;width:150px;height:150px;background-position:center center;background-repeat:no-repeat;">
     </div>
 
-    <table class="game" style="z-index:999;position:fixed;left:0;top:0;width:100%;height:100%;" border="1">
+    <table class="game" style="text-align:center;z-index:999;position:fixed;left:0;top:0;width:100%;height:100%;" border="1">
         <tr>
-            <td style="background-repeat:no-repeat;background-position:center center;border:5px yellow solid;"></td>
-            <td style="background-repeat:no-repeat;background-position:center center;"></td>
+            <td style="background-repeat:no-repeat;background-position:center center;border:5px yellow solid;"><img src="static/1____.png" width="130"></td>
+            <td style="background-repeat:no-repeat;background-position:center center;"><img src="static/1____.png" width="130"></td>
         </tr>
         <tr>
-            <td style="background-repeat:no-repeat;background-position:center center;"></td>
-            <td style="background-repeat:no-repeat;background-position:center center;"></td>
+            <td style="background-repeat:no-repeat;background-position:center center;"><img src="static/1____.png" width="130"></td>
+            <td style="background-repeat:no-repeat;background-position:center center;"><img src="static/1____.png" width="130"></td>
         </tr>
     </table>
 
@@ -402,7 +402,7 @@ function randomPos(){
         failed_score = 0;
 
 
-        if( $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ')').data('value') == current_piece ){
+        if( $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ') img').data('value') == current_piece ){
             //$('table').css('border','5px #00ff00 solid');
             $('.game tr:eq(' + current_y + ') td:eq(' + current_x + ')').css('background-color','#00ff00');
 
@@ -514,10 +514,32 @@ function randomPos(){
     var diff_piece = 'b';
     if( total_score > 5 ){
         diff_piece = '';
+    
+    }
+    
+    if( total_score > 10 ){
+
+
+        if( total_score > 20 ){
+            var rand_deg = randomNumber(0, 360);
+
+            $('.game td img').css('transform', 'rotate(' + rand_deg + 'deg)');
+        
+        }else{
+
+            var rand_deg = randomNumber(0, 360) * 90;
+
+            $('.game td img').css('transform', 'rotate(' + rand_deg + 'deg)');
+        }
+
     }
 
+
+
+    
+
     for(var i=0; i<4; i++){
-        $('.game td:eq(' + i + ')').css('background-image', "url('static/" + pieces_aux[i] + "____" + diff_piece + ".png')").data('value', pieces_aux[i]);
+        $('.game td:eq(' + i + ') img').attr('src', "static/" + pieces_aux[i] + "____" + diff_piece + ".png").data('value', pieces_aux[i]);
     }
 
 
@@ -536,6 +558,8 @@ function showIntro(){
 
 
 function startGame(){
+
+    $('.game td img').css('transform', 'rotate(0deg)');
 
     if( music == 1 ){
         $('#music')[0].play();
