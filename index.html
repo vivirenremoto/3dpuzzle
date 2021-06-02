@@ -67,6 +67,12 @@ body {
 body{background:black;}
 #cover{opacity:0.5;}
 td{opacity:0.3;}
+
+#cover{background-size:100% auto;}
+
+@media screen and (max-width: 480px) {
+    #cover{background-size:auto 100%;}
+}
 </style>
 
     
@@ -92,7 +98,7 @@ style="font-size:30px;position:fixed;right:10px;top:10px;z-index:2;color:white;t
     </div>
 </div>
 
-<div id="cover" style="z-index:1;image-rendering: pixelated;position:fixed;left:0;top:0;width:100%;height:100%;background:url('static/bg.gif');background-size:100% auto;"></div>
+<div id="cover" style="background-position:top center;z-index:1;image-rendering: pixelated;position:fixed;left:0;top:0;width:100%;height:100%;background-image:url('static/bg.gif');"></div>
 
 <div id="pos" style="display:none;z-index:999;position:fixed;left:0;top:0;background:red;color:white;padding:20px">0,0</div>
 
